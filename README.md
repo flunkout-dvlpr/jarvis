@@ -26,12 +26,13 @@ Let me walk you through my *thought process* and how it came together!
 3. The last piece of the puzzle was the code that would play the JARVIS audio clips in the precise order and time. For this I decided to go with a pretty basic python3 script. Below I will walk through the code I wrote and demo the final result!
 
 ### Python Packages
-	* [time](https://docs.python.org/3/library/time.html): Used to pause/sleep in between audio clips
-	* [datetime](https://docs.python.org/3/library/datetime.html): Used to determine current date/time
-	- [pyalsaaudio](https://larsimmisch.github.io/pyalsaaudio/pyalsaaudio.html): Used to adjust the volume on the Raspberry Pi3
-	- [pygame](https://www.pygame.org/docs/ref/mixer.html): Used to play the audio clips
-	- [requests](https://requests.readthedocs.io/en/master/): Used to retrieve weather data from Open Weather Map API
-- I’ve included a requirements.txt file you can run using the command below to install all necessary packages except for time and datetime which come preinstalled with python3
+* [time](https://docs.python.org/3/library/time.html): Used to pause/sleep in between audio clips
+* [datetime](https://docs.python.org/3/library/datetime.html): Used to determine current date/time
+* [pyalsaaudio](https://larsimmisch.github.io/pyalsaaudio/pyalsaaudio.html): Used to adjust the volume on the Raspberry Pi3
+* [pygame](https://www.pygame.org/docs/ref/mixer.html): Used to play the audio clips
+* [requests](https://requests.readthedocs.io/en/master/): Used to retrieve weather data from Open Weather Map API
+
+* I’ve included a requirements.txt file you can run using the command below to install all necessary packages except for time and datetime which come preinstalled with python3
 COMMAND
 
 ### Set Up
