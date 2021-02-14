@@ -45,7 +45,7 @@ pg.mixer.init()
 
 ```
 * To make sure I hear the alarm even if the Pi3’s volume has been lowered or muted, I set the volume using pyalsaaudio a wrapper that allows us to access ALSA Audio using python:  
-> 	Advanced Linux Sound Architecture (ALSA) provides audio and MIDI functionality to the Linux operating system.  
+	> Advanced Linux Sound Architecture (ALSA) provides audio and MIDI functionality to the Linux operating system.  
 * We define a mixer instance and set the control to PCM, which will allow us to control the the volume coming out of the Pi3’s audio jack
 * Using setvolume() method we set the Pi3’s volume to the desired value
 ```
