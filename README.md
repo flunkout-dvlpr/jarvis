@@ -32,11 +32,11 @@ Let me walk you through my *thought process* and how it came together!
 * [pygame](https://www.pygame.org/docs/ref/mixer.html): Used to play the audio clips
 * [requests](https://requests.readthedocs.io/en/master/): Used to retrieve weather data from Open Weather Map API
 
-* I’ve included a requirements.txt file you can run using the command below to install all necessary packages except for time and datetime which come preinstalled with python3
+I’ve included a requirements.txt file you can run using the command below to install all necessary packages except for time and datetime which come preinstalled with python3
 COMMAND
 
 ### Set Up
-	* First thing we have to do is initialize an instance of pygame
+* First thing we have to do is initialize an instance of pygame
 ```
 import pygame as pg
 
@@ -44,10 +44,10 @@ print("Initializing PyGame Mixer")
 pg.mixer.init()
 
 ```
-	* To make sure I hear the alarm even if the Pi3’s volume has been lowered or muted, I set the volume using pyalsaaudio a wrapper that allows us to access ALSA Audio using python: 
-> 	Advanced Linux Sound Architecture (ALSA) provides audio and MIDI functionality to the Linux operating system.
-	* We define a mixer instance and set the control to PCM, which will allow us to control the the volume coming out of the Pi3’s audio jack
-	* Using setvolume() method we set the Pi3’s volume to the desired value
+* To make sure I hear the alarm even if the Pi3’s volume has been lowered or muted, I set the volume using pyalsaaudio a wrapper that allows us to access ALSA Audio using python:  
+> 	Advanced Linux Sound Architecture (ALSA) provides audio and MIDI functionality to the Linux operating system.  
+* We define a mixer instance and set the control to PCM, which will allow us to control the the volume coming out of the Pi3’s audio jack
+* Using setvolume() method we set the Pi3’s volume to the desired value
 ```
 import alsaaudio
 import pygame as pg
@@ -61,7 +61,7 @@ print(mixer.getvolume())
 mixer.setvolume(90)
 print(mixer.getvolume())
 ```
-	* I sorted the JARVIS audio files into a main folder containing sub-folders based on use case (dates, weekdays, numbers, etc) and declared sub-folder paths as formatted strings, making it easy to edit the base path. 
+* I sorted the JARVIS audio files into a main folder containing sub-folders based on use case (dates, weekdays, numbers, etc) and declared sub-folder paths as formatted strings, making it easy to edit the base path. 
 ```
 # Set jarvis_dir to your actual path such as /pi/.../JarvisAudio
 jarvis_dir = "JarvisAudio"
