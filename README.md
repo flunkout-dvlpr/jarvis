@@ -37,7 +37,7 @@ COMMAND
 
 ### Set Up
 * First thing we have to do is initialize an instance of pygame
-```
+```python
 import pygame as pg
 
 print("Initializing PyGame Mixer")
@@ -46,9 +46,9 @@ pg.mixer.init()
 ```
 * To make sure I hear the alarm even if the Pi3’s volume has been lowered or muted, I set the volume using pyalsaaudio a wrapper that allows us to access ALSA Audio using python:  
 	> Advanced Linux Sound Architecture (ALSA) provides audio and MIDI functionality to the Linux operating system.  
-* We define a mixer instance and set the control to PCM, which will allow us to control the the volume coming out of the Pi3’s audio jack
-* Using setvolume() method we set the Pi3’s volume to the desired value
-```
+* We define a mixer instance and set the control to PCM
+* Using the setvolume() method we set the Pi3’s volume to the desired value
+```python
 import alsaaudio
 import pygame as pg
 
@@ -62,7 +62,7 @@ mixer.setvolume(90)
 print(mixer.getvolume())
 ```
 * I sorted the JARVIS audio files into a main folder containing sub-folders based on use case (dates, weekdays, numbers, etc) and declared sub-folder paths as formatted strings, making it easy to edit the base path. 
-```
+```python
 # Set jarvis_dir to your actual path such as /pi/.../JarvisAudio
 jarvis_dir = "JarvisAudio"
 jarvis_temperature_dir = "{}/temperature".format(jarvis_dir)
