@@ -36,7 +36,7 @@ I’ve included a requirements.txt file you can run using the command below to i
 COMMAND
 
 ### Set Up
-* First thing we have to do is initialize an instance of pygame
+* First thing we have to do is initialize an instance of pygame in order to be able to play the audio snippets
 ```python
 import pygame as pg
 
@@ -71,4 +71,168 @@ jarvis_numbers_dir = "{}/numbers".format(jarvis_dir)
 jarvis_dates_dir = "{}/dates".format(jarvis_dir)
 jarvis_wake_up_song = "{}/song_{}.ogg".format(jarvis_dir, random.randint(1,3))
 song = pg.mixer.Sound(jarvis_wake_up_song)
-``
+```
+### Functions
+#### `currentTime()`
+```python
+def currentTime():
+  now = datetime.datetime.now()
+  hour = now.hour
+  if hour > 0 and hour < 12:
+    period = "time_am"
+    hour = str(hour)
+  elif hour == 12:
+    period = "time_pm"
+    hour = str(hour)
+  elif hour > 12 and hour < 24:
+   period = "time_pm"
+   hour = str(hour - 12)
+  else:
+    period = "time_am"
+    hour = "12"
+
+  minute = now.minute
+  if minute == 0:
+    minute = "oclock"
+  elif minute < 10:
+    minute = "0" + str(minute)
+  else:
+    minute = str(minute)
+
+  return hour, minute, period
+```
+#### `getForecast()`
+```python
+def getForecast(city_name):
+  # store as ENV variable
+  api_key = OPEN_WEATHER_API_KEY
+
+  # Opean Weather API request url 
+  api_url = "http://api.openweathermap.org/data/2.5/weather?q={}&appid={}".format(city_name,api_key)
+  
+  # Request response
+  response = requests.get(api_url)
+
+  #JSON response 
+  json_response = response.json()
+
+  if json_response["cod"] == 200:
+    kelvin_temperature = json_response["main"]["temp"]
+    celcius_temperature = round(kelvin_temperature - 273.15)
+    fahrenheit_temperature = round((kelvin_temperature - 273.15) * 9/5 + 32)
+
+    weather_id = json_response["weather"][0]["id"]
+    weather_id_starting_digit = int(str(weather_id)[0])
+
+    # 2xx, 3xx, 5xx, 6xx, 7xx, 8xx
+    # https://openweathermap.org/weather-conditions
+    if weather_id_starting_digit == 2:
+      condition ="Thunderstorm"
+    elif weather_id_starting_digit == 3:
+      condition ="Light Rain"
+    elif weather_id_starting_digit == 5:
+      condition ="Rain"
+    elif weather_id_starting_digit == 6:
+      condition ="Snow"
+    elif weather_id_starting_digit == 7:
+      condition ="Fog/Mist/Haze"
+    elif weather_id_starting_digit == 8:
+      if weather_id == 800:
+        condition ="Clear Sky"
+      else:
+        condition ="Cloudy"
+
+    return celcius_temperature, fahrenheit_temperature, condition
+  else:
+    return False
+```
+
+#### `play_forecast(city)`
+```python
+def play_forecast(city):
+  c_temp, f_temp, condition = getForecast(city)
+  play_sound(sound=sounds["temperature_introduction"], count=1, wait=2)
+  play_number(number=c_temp)
+  play_sound(sound=sounds["degrees"], count=1, wait=1)
+  play_sound(sound=sounds["celcius"], count=1, wait=1)
+
+  if f_temp > 60 and int(str(f_temp)[1]) != 0:
+    firstNumber = int(str(f_temp)[0] + "0")
+    secondNumber = int(str(f_temp)[1]) 
+    play_number(number=firstNumber)
+    play_number(number=secondNumber)
+  else:
+    play_number(number=f_temp)
+  play_sound(sound=sounds["degrees"], count=1, wait=1)
+  play_sound(sound=sounds["fahrenheit"], count=1, wait=1)
+```
+
+#### `play_number(number)`
+```python
+def play_number(number):
+  number_path = "{}/caged_num_{}.ogg".format(jarvis_numbers_dir,number)
+  number = pg.mixer.Sound(number_path)
+  number.play()
+  time.sleep(1)
+```
+
+#### `play_sound(sound, count=1, wait=3)`
+```python
+def play_sound(sound="", count=1, wait=3):
+  while count:
+    audio = pg.mixer.Sound(sound)
+    audio.play()
+    time.sleep(wait)
+    count -= 1
+```
+
+#### `play_date()`
+```python
+def play_date():
+  now = datetime.datetime.now()
+  weekday_str = now.strftime("%A").lower()
+  weekday = "{}/caged_day_{}.ogg".format(jarvis_weekdays_dir,weekday_str)
+
+  date_str = now.strftime("%d").lower()
+  date = "{}/caged_date_{}.ogg".format(jarvis_dates_dir,date_str)
+
+  play_sound(sound=weekday, count=1, wait=.5)
+  play_sound(sound=sounds["date_introduction"], count=1, wait=.5)
+  play_sound(sound=date, count=1, wait=1)
+
+```
+
+#### `play_time()`
+```python
+
+def play_time():
+  hour, minute, period = currentTime()
+  play_number(number=hour)
+  play_number(number=minute)
+  play_sound(sound=sounds[period], count=1, wait=1)
+```
+
+
+#### `play_song(song)`
+```python
+
+def play_song(song):
+  song.set_volume(0.5)
+  song.play()
+
+  currentVolume = song.get_volume()
+
+  while currentVolume < 1:
+    currentVolume += .05
+    song.set_volume(currentVolume)
+    time.sleep(.5)
+
+  time.sleep(60)
+
+  currentVolume = song.get_volume()
+
+  while currentVolume > .05:
+    currentVolume -= .05
+    song.set_volume(currentVolume)
+    time.sleep(.5)
+```
