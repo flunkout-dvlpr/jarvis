@@ -73,6 +73,60 @@ jarvis_wake_up_song = "{}/song_{}.ogg".format(jarvis_dir, random.randint(1,3))
 song = pg.mixer.Sound(jarvis_wake_up_song)
 ```
 ### Functions
+#### `play_number(number)`
+```python
+def play_number(number):
+  number_path = "{}/caged_num_{}.ogg".format(jarvis_numbers_dir,number)
+  number = pg.mixer.Sound(number_path)
+  number.play()
+  time.sleep(1)
+```
+#### `play_sound(sound, count=1, wait=3)`
+```python
+def play_sound(sound, count=1, wait=3):
+  while count:
+    audio = pg.mixer.Sound(sound)
+    audio.play()
+    time.sleep(wait)
+    count -= 1
+```
+#### `play_date()`
+```python
+def play_date():
+  now = datetime.datetime.now()
+  weekday_str = now.strftime("%A").lower()
+  weekday = "{}/caged_day_{}.ogg".format(jarvis_weekdays_dir,weekday_str)
+
+  date_str = now.strftime("%d").lower()
+  date = "{}/caged_date_{}.ogg".format(jarvis_dates_dir,date_str)
+
+  play_sound(sound=weekday, count=1, wait=.5)
+  play_sound(sound=sounds["date_introduction"], count=1, wait=.5)
+  play_sound(sound=date, count=1, wait=1)
+
+```
+#### `play_song(song)`
+```python
+def play_song(song):
+  song.set_volume(0.5)
+  song.play()
+
+  currentVolume = song.get_volume()
+
+  while currentVolume < 1:
+    currentVolume += .05
+    song.set_volume(currentVolume)
+    time.sleep(.5)
+
+  time.sleep(60)
+
+  currentVolume = song.get_volume()
+
+  while currentVolume > .05:
+    currentVolume -= .05
+    song.set_volume(currentVolume)
+    time.sleep(.5)
+```
 #### `currentTime()`
 ```python
 def currentTime():
@@ -100,6 +154,14 @@ def currentTime():
     minute = str(minute)
 
   return hour, minute, period
+```
+#### `play_time()`
+```python
+def play_time():
+  hour, minute, period = currentTime()
+  play_number(number=hour)
+  play_number(number=minute)
+  play_sound(sound=sounds[period], count=1, wait=1)
 ```
 #### `getForecast()`
 ```python
@@ -165,74 +227,4 @@ def play_forecast(city):
     play_number(number=f_temp)
   play_sound(sound=sounds["degrees"], count=1, wait=1)
   play_sound(sound=sounds["fahrenheit"], count=1, wait=1)
-```
-
-#### `play_number(number)`
-```python
-def play_number(number):
-  number_path = "{}/caged_num_{}.ogg".format(jarvis_numbers_dir,number)
-  number = pg.mixer.Sound(number_path)
-  number.play()
-  time.sleep(1)
-```
-
-#### `play_sound(sound, count=1, wait=3)`
-```python
-def play_sound(sound="", count=1, wait=3):
-  while count:
-    audio = pg.mixer.Sound(sound)
-    audio.play()
-    time.sleep(wait)
-    count -= 1
-```
-
-#### `play_date()`
-```python
-def play_date():
-  now = datetime.datetime.now()
-  weekday_str = now.strftime("%A").lower()
-  weekday = "{}/caged_day_{}.ogg".format(jarvis_weekdays_dir,weekday_str)
-
-  date_str = now.strftime("%d").lower()
-  date = "{}/caged_date_{}.ogg".format(jarvis_dates_dir,date_str)
-
-  play_sound(sound=weekday, count=1, wait=.5)
-  play_sound(sound=sounds["date_introduction"], count=1, wait=.5)
-  play_sound(sound=date, count=1, wait=1)
-
-```
-
-#### `play_time()`
-```python
-
-def play_time():
-  hour, minute, period = currentTime()
-  play_number(number=hour)
-  play_number(number=minute)
-  play_sound(sound=sounds[period], count=1, wait=1)
-```
-
-
-#### `play_song(song)`
-```python
-
-def play_song(song):
-  song.set_volume(0.5)
-  song.play()
-
-  currentVolume = song.get_volume()
-
-  while currentVolume < 1:
-    currentVolume += .05
-    song.set_volume(currentVolume)
-    time.sleep(.5)
-
-  time.sleep(60)
-
-  currentVolume = song.get_volume()
-
-  while currentVolume > .05:
-    currentVolume -= .05
-    song.set_volume(currentVolume)
-    time.sleep(.5)
 ```
