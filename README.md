@@ -25,7 +25,7 @@ Let me walk you through my *thought process* and how it came together!
 
 3. The last piece of the puzzle was the code that would play the JARVIS audio clips in the precise order and time. For this I decided to go with a pretty basic python3 script. Below I will walk through the code I wrote and demo the final result!
 
-### Python Packages
+## Python Packages
 * [time](https://docs.python.org/3/library/time.html): Used to pause/sleep in between audio clips
 * [datetime](https://docs.python.org/3/library/datetime.html): Used to determine current date/time
 * [pyalsaaudio](https://larsimmisch.github.io/pyalsaaudio/pyalsaaudio.html): Used to adjust the volume on the Raspberry Pi3
@@ -36,7 +36,13 @@ I’ve included a requirements.txt file you can run using the command below to i
 COMMAND
 
 ## Set Up
-* First thing we have to do is initialize an instance of pygame in order to be able to play the audio snippets
+* First thing we have to do is initialize an instance of pygame mixer in order to be able to play the audio snippets
+* A couple of things to note about pygame mixer:
+	* While .mp3 is supported it is somewhat glitchy and I found .ogg to have the most reliable playback on the Pi3's Debian based OS. I converted all the files to .ogg by running this command in the JarvisAudio directory:
+	`for i in *.mp3; do ffmpeg -i "$i" "${i%.*}.ogg"; done`
+	* A audio file must first be loaded using the `Sound()` method which creates a sound object
+	* A sound object is played using the `play()` method
+	* The play method does not wait for the file to finish playing therefore `time.sleep(file_length_in_seconds)` is used to allow for the file to play the entire duration
 ```python
 import pygame as pg
 
