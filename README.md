@@ -39,7 +39,7 @@ COMMAND
 * First thing we have to do is initialize an instance of pygame mixer in order to be able to play the audio snippets
 * A couple of things to note about pygame mixer:
 	* While .mp3 is supported it is somewhat glitchy and I found .ogg to have the most reliable playback on the Pi3's Debian based OS. I converted all the files to .ogg by running this command in the JarvisAudio directory:
-	`for i in *.mp3; do ffmpeg -i "$i" "${i%.*}.ogg"; done`
+	`for i in *.mp3; do ffmpeg -i "$i" "${i%.*}.ogg"; done`  
 	* A audio file must first be loaded using the `Sound()` method which creates a sound object
 	* A sound object is played using the `play()` method
 	* The play method does not wait for the file to finish playing therefore `time.sleep(file_length_in_seconds)` is used to allow for the file to play the entire duration
