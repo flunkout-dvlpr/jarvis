@@ -67,7 +67,28 @@ print(mixer.getvolume())
 mixer.setvolume(90)
 print(mixer.getvolume())
 ```
-* I organized the JARVIS audio files into a main folder containing sub-folders based on use case (dates, weekdays, numbers, etc) and declared sub-folder paths as formatted strings, making it easy to edit the base path. 
+ 
+## JARVIS Audio Files
+* Number audio files provided:
+	* Numbers 1-60 in increments of 1 (1,2,3...58,59,60)
+	* After 60, numbers are only provided in increments of 10 up to 100 (70,80,90,100)
+* Time audio files provided:
+	* Time intros
+	* Numbers less than 10 are provided in an additional 0 padded form (01,02...08,09)
+	* An 'oclock' file, useful for time telling, such as 'Five o'clock'
+	* AM and PM
+* Date and Weekdays audio files provided:
+	* All dates 1st-31st 
+	* All days Monday-Sunday
+	* An 'the' file, useful for date telling, such as 'Sunday the 14th'
+* Temperature audio files provided:
+	* Temperature intros
+	* Fahrenheit, Celsius and Degrees
+* Other audio files provided:
+	* Alarm rings
+	* Chimes
+	* Wake up messages and much more
+* I organized the JARVIS audio files into a main folder containing sub-folders based on use case (dates, weekdays, numbers, etc) and declared sub-folder paths as formatted strings, making it easy to edit the base path.
 ```python
 # Set jarvis_dir to your actual path such as /pi/.../JarvisAudio
 jarvis_dir = "JarvisAudio"
@@ -80,10 +101,10 @@ song = pg.mixer.Sound(jarvis_wake_up_song)
 ```
 ## Functions
 #### `play_sound(sound, count=1, wait=3)`
-* play_sound is a helper function with all of the necessary steps to load and play an audio file for it's entire duration
-- sound: path to audio file
-- count: number of times to play the audio file
-- wait: the duration of the file in seconds
+A helper function with all of the necessary steps to load and play an audio file for it's entire duration
+- sound: path (string) to audio file
+- count: number (int) of times to play the audio file
+- wait: the duration of the file in seconds (float)
 ```python
 def play_sound(sound, count=1, wait):
   while count:
@@ -93,6 +114,7 @@ def play_sound(sound, count=1, wait):
     count -= 1
 ```
 #### `play_number(number)`
+A helper function to load and play any JARVIS number audio file, using the jarvis_numbers_dir path and the number(int) taken as an argument
 ```python
 def play_number(number):
   number_path = "{}/caged_num_{}.ogg".format(jarvis_numbers_dir,number)
