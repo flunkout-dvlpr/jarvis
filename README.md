@@ -21,7 +21,7 @@ Let me walk you through my *thought process* and how it came together!
 	2. [Shairport Sync](https://github.com/mikebrady/shairport-sync) a service that essentially mimics AirPlay enabling audio streaming from any iOS/macOS device
 	3. [Spotify Remote](https://github.com/flunkout-dvlpr/spotify-remote) a service I created to make a physical Spotify remote using an LED screen and arcade buttons
 
-  Stay tuned, posts on these topics coming soon!
+  	Stay tuned, posts on these topics coming soon!
 
 3. The last piece of the puzzle was the code that would play the JARVIS audio clips in the precise order and time. For this I decided to go with a pretty basic python3 script. Below I will walk through the code I wrote and demo the final result!
 
