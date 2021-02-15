@@ -35,7 +35,7 @@ Let me walk you through my *thought process* and how it came together!
 I’ve included a requirements.txt file you can run using the command below to install all necessary packages except for time and datetime which come preinstalled with python3
 COMMAND
 
-### Set Up
+## Set Up
 * First thing we have to do is initialize an instance of pygame in order to be able to play the audio snippets
 ```python
 import pygame as pg
@@ -72,7 +72,7 @@ jarvis_dates_dir = "{}/dates".format(jarvis_dir)
 jarvis_wake_up_song = "{}/song_{}.ogg".format(jarvis_dir, random.randint(1,3))
 song = pg.mixer.Sound(jarvis_wake_up_song)
 ```
-### Functions
+## Functions
 #### `play_number(number)`
 ```python
 def play_number(number):
