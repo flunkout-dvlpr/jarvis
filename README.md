@@ -40,9 +40,9 @@ COMMAND
 * A couple of things to note about pygame mixer:
 	* While .mp3 is supported it is somewhat glitchy and I found .ogg to have the most reliable playback on the Pi3's Debian based OS. I converted all the files to .ogg by running this command in the JarvisAudio directory:  
 	`for i in *.mp3; do ffmpeg -i "$i" "${i%.*}.ogg"; done`
-	* A audio file must first be loaded using the `Sound()` method which creates a sound object
+	* An audio file must first be loaded using the `Sound()` method which creates a sound object
 	* A sound object is played using the `play()` method
-	* The play method does not wait for the file to finish playing therefore `time.sleep(file_length_in_seconds)` is used to allow for the file to play the entire duration
+	* The play method does not wait for the file to finish playing therefore `time.sleep(file_length_in_seconds)` is used to play the file for it's entire duration
 ```python
 import pygame as pg
 
@@ -52,8 +52,8 @@ pg.mixer.init()
 ```
 * To make sure I hear the alarm even if the Pi3’s volume has been lowered or muted, I set the volume using pyalsaaudio a wrapper that allows us to access ALSA Audio using python:  
 	> Advanced Linux Sound Architecture (ALSA) provides audio and MIDI functionality to the Linux operating system.  
-* We define a mixer instance and set the control to PCM
-* Using the setvolume() method we set the Pi3’s volume to the desired value
+* We define a mixer instance and set the control argument to PCM
+* Using the `setvolume()` method we set the Pi3’s volume to the desired value
 ```python
 import alsaaudio
 import pygame as pg
@@ -67,7 +67,7 @@ print(mixer.getvolume())
 mixer.setvolume(90)
 print(mixer.getvolume())
 ```
-* I sorted the JARVIS audio files into a main folder containing sub-folders based on use case (dates, weekdays, numbers, etc) and declared sub-folder paths as formatted strings, making it easy to edit the base path. 
+* I organized the JARVIS audio files into a main folder containing sub-folders based on use case (dates, weekdays, numbers, etc) and declared sub-folder paths as formatted strings, making it easy to edit the base path. 
 ```python
 # Set jarvis_dir to your actual path such as /pi/.../JarvisAudio
 jarvis_dir = "JarvisAudio"
@@ -79,6 +79,19 @@ jarvis_wake_up_song = "{}/song_{}.ogg".format(jarvis_dir, random.randint(1,3))
 song = pg.mixer.Sound(jarvis_wake_up_song)
 ```
 ## Functions
+#### `play_sound(sound, count=1, wait=3)`
+* play_sound is a helper function with all of the necessary steps to load and play an audio file for it's entire duration
+- sound: path to audio file
+- count: number of times to play the audio file
+- wait: the duration of the file in seconds
+```python
+def play_sound(sound, count=1, wait):
+  while count:
+    audio = pg.mixer.Sound(sound)
+    audio.play()
+    time.sleep(wait)
+    count -= 1
+```
 #### `play_number(number)`
 ```python
 def play_number(number):
@@ -86,15 +99,6 @@ def play_number(number):
   number = pg.mixer.Sound(number_path)
   number.play()
   time.sleep(1)
-```
-#### `play_sound(sound, count=1, wait=3)`
-```python
-def play_sound(sound, count=1, wait=3):
-  while count:
-    audio = pg.mixer.Sound(sound)
-    audio.play()
-    time.sleep(wait)
-    count -= 1
 ```
 #### `play_date()`
 ```python
