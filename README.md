@@ -99,6 +99,30 @@ jarvis_dates_dir = "{}/dates".format(jarvis_dir)
 jarvis_wake_up_song = "{}/song_{}.ogg".format(jarvis_dir, random.randint(1,3))
 song = pg.mixer.Sound(jarvis_wake_up_song)
 ```
+* Subsequently I created a dictionary with some of the most frequently used audio files for easy access
+```python
+sounds = {
+  "alarm": "{}/caged_button_sound_ALARM_5.ogg".format(jarvis_dir),
+  "chime": "{}/caged_button_sound_4.ogg".format(jarvis_dir),
+  "good_morning": "{}/caged_listening_on_morning.ogg".format(jarvis_dir),
+  "sir": "{}/caged_title_u_s.ogg".format(jarvis_dir),
+  "wake_up": "{}/caged_clock_alarm_wake_4.ogg".format(jarvis_dir),
+  "reminder": "{}/caged_clock_reminder_alert_4.ogg".format(jarvis_dir),
+  "time_introduction": "{}/caged_clock_time_1.ogg".format(jarvis_dir),
+  "date_introduction": "{}/caged_date_the.ogg".format(jarvis_dir),
+  "oclock": "{}/caged_clock_oclock.ogg".format(jarvis_dir),
+  "time_am": "{}/caged_clock_am.ogg".format(jarvis_dir),
+  "time_pm": "{}/caged_clock_pm.ogg".format(jarvis_dir),
+  "song_introduction": "{}/caged_clock_alarm_wake_3.ogg".format(jarvis_dir),
+  "temperature_introduction": "{}/caged_temp_current_2.ogg".format(jarvis_temperature_dir),
+  "sod_introduction": "{}/caged_intro_a.ogg".format(jarvis_dir),
+  "degrees": "{}/caged_temp_degrees.ogg".format(jarvis_temperature_dir),
+  "fahrenheit": "{}/caged_temp_f.ogg".format(jarvis_temperature_dir),
+  "celcius": "{}/caged_temp_c.ogg".format(jarvis_temperature_dir)
+}
+
+```
+
 ## Functions
 #### `play_sound(sound, count=1, wait=3)`
 A helper function with all of the necessary steps to load and play an audio file for it's entire duration
