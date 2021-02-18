@@ -21,7 +21,7 @@ Let me walk you through my *thought process* and how it came together!
 	2. [Shairport Sync](https://github.com/mikebrady/shairport-sync) a service that essentially mimics AirPlay enabling audio streaming from any iOS/macOS device
 	3. [Spotify Remote](https://github.com/flunkout-dvlpr/spotify-remote) a service I created to make a physical Spotify remote using an LED screen and arcade buttons
 
-  	Stay tuned, posts on these topics coming soon!
+	Stay tuned, posts on these topics coming soon!
 
 3. The last piece of the puzzle was the code that would play the JARVIS audio clips in the precise order and time. For this I decided to go with a pretty basic python3 script. Below I will walk through the code I wrote and demo the final result!
 
@@ -89,6 +89,7 @@ print(mixer.getvolume())
 	* Chimes
 	* Wake up messages and much more
 * I organized the JARVIS audio files into a main folder containing sub-folders based on use case (dates, weekdays, numbers, etc) and declared sub-folder paths as formatted strings, making it easy to edit the base path.
+
 ```python
 # Set jarvis_dir to your actual path such as /pi/.../JarvisAudio
 jarvis_dir = "JarvisAudio"
@@ -99,7 +100,9 @@ jarvis_dates_dir = "{}/dates".format(jarvis_dir)
 jarvis_wake_up_song = "{}/song_{}.ogg".format(jarvis_dir, random.randint(1,3))
 song = pg.mixer.Sound(jarvis_wake_up_song)
 ```
+
 * Subsequently I created a dictionary with some of the most frequently used audio files for easy access
+
 ```python
 sounds = {
   "alarm": "{}/caged_button_sound_ALARM_5.ogg".format(jarvis_dir),
@@ -120,15 +123,16 @@ sounds = {
   "fahrenheit": "{}/caged_temp_f.ogg".format(jarvis_temperature_dir),
   "celcius": "{}/caged_temp_c.ogg".format(jarvis_temperature_dir)
 }
-
 ```
 
 ## Functions
 #### `play_sound(sound, count=1, wait=3)`
-A helper function with all of the necessary steps to load and play an audio file for it's entire duration
-- sound: path (string) to audio file
-- count: number (int) of times to play the audio file
-- wait: the duration of the file in seconds (float)
+A helper/wrapper function used to load and play an audio file for it's entire duration using:
+
+* **sound**: path (str) to audio file
+* **count**: number (int) of times to play the audio file, default 1
+* **wait**: the duration of the file in seconds (float)
+
 ```python
 def play_sound(sound, count=1, wait):
   while count:
@@ -138,15 +142,17 @@ def play_sound(sound, count=1, wait):
     count -= 1
 ```
 #### `play_number(number)`
-A helper function to load and play any JARVIS number audio file, using the jarvis_numbers_dir path and the number(int) taken as an argument
+A helper function to load and play any JARVIS number audio file, using:
+* **number**: The desired number audio file to play,a the file path is generated and played using play_sound()
+
 ```python
 def play_number(number):
-  number_path = "{}/caged_num_{}.ogg".format(jarvis_numbers_dir,number)
-  number = pg.mixer.Sound(number_path)
-  number.play()
-  time.sleep(1)
+  audio_number_path = "{}/caged_num_{}.ogg".format(jarvis_numbers_dir,number)
+  play_sound(audio_number_path, count=4, wait=1)
 ```
+
 #### `play_date()`
+
 ```python
 def play_date():
   now = datetime.datetime.now()
@@ -155,13 +161,15 @@ def play_date():
 
   date_str = now.strftime("%d").lower()
   date = "{}/caged_date_{}.ogg".format(jarvis_dates_dir,date_str)
-
+  
+  play_sound(sound=sounds['time_introduction'], count=1, wait=1)
   play_sound(sound=weekday, count=1, wait=.5)
   play_sound(sound=sounds["date_introduction"], count=1, wait=.5)
   play_sound(sound=date, count=1, wait=1)
 
 ```
 #### `play_song(song)`
+
 ```python
 def play_song(song):
   song.set_volume(0.5)
